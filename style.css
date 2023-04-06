@@ -78,9 +78,25 @@ body {
   background: red !important;
 }
 
+.yellow {
+  background: yellow !important;
+}
+
 .message-div img {
   border-radius: 8px;
   width: 100%;
+}
+
+.msg-model {
+  position: relative;
+  width: 100%;
+  display: flexbox
+}
+
+.msg-model-m {
+  position: relative;
+  width: 100%;
+  display: flexbox
 }
 
 input,
@@ -256,6 +272,11 @@ author {
 }
 
 .diarel {
+  position: relative;
+  height: 2.3rem;
+}
+
+.diarel-m {
   position: relative;
   height: 2.3rem;
 }

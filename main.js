@@ -2,12 +2,28 @@ function $(q) {
   return document.querySelector(q)
 }
 
-const API_KEY = 'a47cfa6b91e9f17c83f49f17144fa88104318'
+const API_KEY = '642e83c839cf552ef728c028'
 
 var mData = {
   name: '',
   email: ''
 }
+
+function formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  // the hour '0' should be '12' 
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+
+
+
+
 
 refresh()
 
@@ -34,28 +50,46 @@ document.getElementById('sumbit').onclick = function() {
 document.getElementById('sendBtn').onclick = function() {
   if ($('#messageInp').value) {
 
+    var nowDate = formatAMPM(new Date())
+
     var data = JSON.stringify({
       "author": mData.name,
       "message": $('#messageInp').value,
-      "date": new Date()
+      "date": nowDate
     });
+
 
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = false;
 
     xhr.addEventListener("readystatechange", function() {
       if (this.readyState === 4) {
-        console.log(this.responseText);
+        //console.log(this.response);
       }
     });
 
-    xhr.open("POST", "https://qwerty-2432.restdb.io/rest/nesc");
+    xhr.open("POST", "https://greanleaf-d8a1.restdb.io/rest/communication");
     xhr.setRequestHeader("content-type", "application/json");
     xhr.setRequestHeader("x-apikey", API_KEY);
     xhr.setRequestHeader("cache-control", "no-cache");
 
     xhr.send(data);
-    refresh()
+    //refresh()
+
+
+    var htmlCode = `<div class="msg-model"><div>
+          <div class="message-div msg-right">
+            <author>${mData.name}</author>
+            <div class="message">
+              ${$('#messageInp').value}
+            </div>
+            <time>${nowDate}</time>
+          </div>
+        </div></div>`
+
+    $('#body').innerHTML += htmlCode
+    $('#body').scrollTo(0, 999999999999)
+    $('#messageInp').value = ''
   }
 }
 
@@ -64,15 +98,7 @@ var restoredData = []
 
 
 function refresh() {
-  //xhr.send(data);
-}
-
-
-
-
-
-setInterval(function() {
-  var data = null;
+  var bodyData = null;
 
   var xhr = new XMLHttpRequest();
   xhr.withCredentials = false;
@@ -80,48 +106,154 @@ setInterval(function() {
   xhr.addEventListener('readystatechange', function() {
     if (this.readyState === 4) {
       if (this.status == 0) {
-        console.log(xhr);
         $('#status').innerHTML = `
-        <p class="subtext">offline</p> 
-        <div class="status red" > </div>`
+        <p class="subtext">active</p> 
+        <div class="status yellow" > </div>`
       } else {
-         $('#status').innerHTML = `
+        $('#status').innerHTML = `
         <p class="subtext">online</p> 
-        <div class="status" > </div>`
-        
-        var data = JSON.parse(this.response)
-        console.log(data);
+        <div class="status"> </div>`
 
-        $('#body').innerHTML = ''
+
+
+        var data = JSON.parse(this.response)
+        //console.log(data);
+
+        $('#body').innerHTML = `<div class="diarel">
+      <div class="dialoge">welcome never ending struggle game community</div>
+    </div>
+    <div class="msg-model">
+      <div class="message-div msg-left">
+        <author>Radin</author>
+        <div class="message">
+          <img src="HbCcfmxrd0pIl2263APn--1--li78k-01.jpeg" alt="logo">
+          <h3>never-ending-struggle trailer version</h3>
+          <hr>
+          <p>get never-ending-struggle(nes) latest version, its free download now</p>
+          <button>download</button><button>view</button>
+        </div>
+        <time>2:00pm</time>
+      </div>
+    </div>`
+
+
+        data.sort((a, b) => {
+          return b.date - a.date;
+        });
+
+
+
+        //console.log(data);
 
         data.forEach(function(dat, i) {
-          if (dat == restoredData[i]) {} else {
-            var htmlCode = `<div>
-          <div class="message-div">
+          //if (dat == restoredData[i]) {
+
+          //} else {
+
+          var htmlCode = `<div class="msg-model"><div>
+          <div class="message-div ${mData.name == dat.author ? 'msg-right' : 'msg-left'}">
             <author>${dat.author}</author>
             <div class="message">
               ${dat.message}
             </div>
             <time>${dat.date}</time>
           </div>
-        </div>`
+        </div></div>`
 
-            $('#body').innerHTML += htmlCode
-          }
+          restoredData.push(dat)
+          $('#body').innerHTML += htmlCode
+          //$('#body').scrollTo(0, (-$("#body").scrollHeight))
+          setTimeout(function() {
+            $("#body").scrollY = ($("#body").scrollHeight)
+            //console.log($('#body').scrollY);
+          }, 200)
+          // }
         })
       }
     }
   });
 
 
-  xhr.open("GET", "https://nesdb-711c.restdb.io/rest/nesc");
+  xhr.open("GET", "https://greanleaf-d8a1.restdb.io/rest/communication");
 
 
   xhr.setRequestHeader("content-type", "application/json");
   xhr.setRequestHeader("x-apikey", API_KEY);
   xhr.setRequestHeader("cache-control", "no-cache");
 
-  xhr.send(data);
+  xhr.send(bodyData);
+}
+
+
+
+
+
+setInterval(function() {
+  /* var data = null;
+
+   var xhr = new XMLHttpRequest();
+   xhr.withCredentials = false;
+
+   xhr.addEventListener('readystatechange', function() {
+     if (this.readyState === 4) {
+       if (this.status == 0) {
+         console.log(xhr);
+         $('#status').innerHTML = `
+         <p class="subtext">offline</p> 
+         <div class="status red" > </div>`
+       } else {
+         $('#status').innerHTML = `
+         <p class="subtext">online</p> 
+         <div class="status" > </div>`
+
+         var data = JSON.parse(this.response)
+         console.log(data);
+
+         $('#body').innerHTML = `<div class="diarel">
+               <div class="dialoge">welcome never ending struggle game community</div>
+             </div> <div>
+           <div class="message-div">
+                 <author>Radin</author>
+                 <div class="message">
+                   <img src="HbCcfmxrd0pIl2263APn--1--li78k-01.jpeg" alt="logo">
+                   <h3>never-ending-struggle trailer version</h3>
+                   <hr>
+                   <p>get never-ending-struggle(nes) latest version, its free download now</p>
+                   <button>download</button><button>view</button>
+                 </div>
+                 <time>2:00pm</time>
+               </div> </div>`
+
+         data.forEach(function(dat, i) {
+           if (dat == restoredData[i]) {} else {
+             var htmlCode = `<div>
+           <div class="message-div">
+             <author>${dat.author}</author>
+             <div class="message">
+               ${dat.message}
+             </div>
+             <time>${dat.date}</time>
+           </div>
+         </div>`
+
+             $('#body').innerHTML += htmlCode
+           }
+         })
+       }
+     }
+   });
+
+
+   xhr.open("GET", "https://greanleaf-d8a1.restdb.io/rest/communication");
+
+
+   xhr.setRequestHeader("content-type", "application/json");
+   xhr.setRequestHeader("x-apikey", API_KEY);
+   xhr.setRequestHeader("cache-control", "no-cache");
+
+   xhr.send(data);*/
+
+  refresh()
 
 }, 10000)
 
@@ -130,5 +262,11 @@ setInterval(function() {
 setInterval(function() {
   document.querySelectorAll('.diarel').forEach(function(v, i) {
     v.style.height = v.querySelector('.dialoge').offsetHeight + 6 + 'px'
+    v.className = 'diarel-m'
+  })
+
+  document.querySelectorAll('.msg-model').forEach(function(v, i) {
+    v.style.height = v.querySelector('.message-div').offsetHeight + 8 + 'px'
+    v.className = 'msg-model-m'
   })
 })
