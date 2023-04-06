@@ -72,6 +72,24 @@ body {
   background: #111;
   padding: 0.3rem;
   width: 97.5%;
+  animation: stic 0.1s infinite;
+}
+
+@keyframes stic {
+  from {
+    position: sticky;
+    position: -webkit-sticky;
+    bottom: 0;
+    left: 0;
+  }
+
+
+  to {
+    position: sticky;
+    position: -webkit-sticky;
+    bottom: 0;
+    left: 0;
+  }
 }
 
 .red {
@@ -301,7 +319,12 @@ time {
   bottom: 4px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0.2rem;
 }
 
@@ -309,5 +332,5 @@ hr {
   border: 1px solid #333;
   background: #888;
   height: 0.1px;
-  border-radius: 5px 
+  border-radius: 5px
 }

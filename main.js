@@ -184,6 +184,11 @@ function refresh() {
   xhr.send(bodyData);
 }
 
+function report(e) {
+  alert(e)
+}
+
+window.onerror = report
 
 
 
@@ -268,5 +273,9 @@ setInterval(function() {
   document.querySelectorAll('.msg-model').forEach(function(v, i) {
     v.style.height = v.querySelector('.message-div').offsetHeight + 8 + 'px'
     v.className = 'msg-model-m'
+  })
+
+  document.querySelectorAll('*').forEach(function(v, i) {
+    v.onerror = report
   })
 })
