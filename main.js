@@ -2,7 +2,7 @@ function $(q) {
   return document.querySelector(q)
 }
 
-const API_KEY = 'bd25854b1c53a1bab9df171453a3f6e07fb61'
+const API_KEY = 'a47cfa6b91e9f17c83f49f17144fa88104318'
 
 var mData = {
   name: '',
@@ -64,6 +64,14 @@ var restoredData = []
 
 
 function refresh() {
+  //xhr.send(data);
+}
+
+
+
+
+
+setInterval(function() {
   var data = null;
 
   var xhr = new XMLHttpRequest();
@@ -106,23 +114,15 @@ function refresh() {
   });
 
 
-  xhr.open("GET", "https://qwerty-2432.restdb.io/rest/nesc");
+  xhr.open("GET", "https://nesdb-711c.restdb.io/rest/nesc");
 
 
   xhr.setRequestHeader("content-type", "application/json");
   xhr.setRequestHeader("x-apikey", API_KEY);
   xhr.setRequestHeader("cache-control", "no-cache");
 
-
   xhr.send(data);
-}
 
-
-
-
-
-setInterval(function() {
-  refresh()
 }, 10000)
 
 

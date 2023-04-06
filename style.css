@@ -78,6 +78,11 @@ body {
   background: red !important;
 }
 
+.message-div img {
+  border-radius: 8px;
+  width: 100%;
+}
+
 input,
 textarea {
   background: #222;
