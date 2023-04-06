@@ -2,6 +2,12 @@ function $(q) {
   return document.querySelector(q)
 }
 
+function report(e) {
+  alert(e)
+}
+
+window.onerror = report
+
 const API_KEY = '642e83c839cf552ef728c028'
 
 var mData = {
@@ -184,11 +190,7 @@ function refresh() {
   xhr.send(bodyData);
 }
 
-function report(e) {
-  alert(e)
-}
 
-window.onerror = report
 
 
 
